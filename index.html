@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Cadastro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Cadastro</h2>
+    <form id="form-cadastro">
+        <input type="text" id="usuario" name="usuario" placeholder="Usuário" required>
+        <input type="password" id="senha" name="senha" placeholder="Senha" required>
+        <input type="password" id="confirma_senha" name="confirma_senha" placeholder="Confirme a Senha" required>
+        <button type="submit">Cadastrar</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('form-cadastro').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const usuario = document.getElementById('usuario').value;
+    const senha = document.getElementById('senha').value;
+    const confirmaSenha = document.getElementById('confirma_senha').value;
+
+    // Verifica se as senhas coincidem
+    if (senha !== confirmaSenha) {
+        alert('As senhas não coincidem!');
+        return;
+    }
+
+    // Enviando os dados via POST usando fetch
+    const response = await fetch('http://localhost:3000/cadastro', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            usuario: usuario,
+            senha: senha
+        })
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+        alert(result.message);
+    } else {
+        alert(result.error);
+    }
+});
+</script>
+
+</body>
+</html>
